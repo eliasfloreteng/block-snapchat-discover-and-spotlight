@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Spotlight Blocker for Snapchat</string>
+    <string name="accessibility_service_description">Monitors Snapchat to detect when you navigate to blocked sections like Spotlight, and automatically returns you to the home screen.</string>
 </resources>
