@@ -29,8 +29,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SpotlightBlockerForSnapchatTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding))
+                var showSettings by remember { mutableStateOf(false) }
+
+                if (showSettings) {
+                    SettingsScreen(onBack = { showSettings = false })
+                } else {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        MainScreen(
+                            modifier = Modifier.padding(innerPadding),
+                            onOpenSettings = { showSettings = true }
+                        )
+                    }
                 }
             }
         }
@@ -38,7 +47,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(modifier: Modifier = Modifier, onOpenSettings: () -> Unit) {
     val context = LocalContext.current
     val isServiceEnabled = remember { mutableStateOf(isAccessibilityServiceEnabled(context)) }
     val hasNotificationPermission = remember {
@@ -205,6 +214,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
             )
         ) {
             Text("Refresh Status")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = onOpenSettings,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.tertiary
+            )
+        ) {
+            Text("Settings")
         }
 
         Spacer(modifier = Modifier.height(32.dp))
