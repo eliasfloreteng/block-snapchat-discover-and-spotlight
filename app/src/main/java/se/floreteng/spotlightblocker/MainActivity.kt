@@ -78,7 +78,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Spotlight Blocker",
+            text = "Snapchat Blocker",
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
@@ -86,7 +86,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "This app blocks Snapchat Spotlight by automatically returning you to the home screen when detected.",
+            text = "This app blocks Snapchat Discover by automatically returning you to the home screen when detected.",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface
@@ -210,7 +210,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "How to enable:\n1. Tap 'Open Accessibility Settings'\n2. Find 'Spotlight Blocker for Snapchat'\n3. Toggle it ON\n4. Return here and tap 'Refresh Status'",
+            text = "How to enable:\n1. Tap 'Open Accessibility Settings'\n2. Find 'Snapchat Blocker'\n3. Toggle it ON\n4. Return here and tap 'Refresh Status'",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant

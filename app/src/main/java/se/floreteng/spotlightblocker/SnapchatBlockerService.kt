@@ -13,9 +13,10 @@ class SnapchatBlockerService : AccessibilityService() {
         private const val TAG = "SnapchatBlockerService"
         private const val SNAPCHAT_PACKAGE = "com.snapchat.android"
 
-        // Known Spotlight identifiers (we'll start with text matching for MVP)
-        private val SPOTLIGHT_INDICATORS = listOf(
-            "View Profile",
+        // Known Discover page identifiers
+        private val BLOCKED_PAGE_INDICATORS = listOf(
+            "View Profile",  // Appears at bottom of Discover content
+            "For You",  // On top of Spotlight page
         )
     }
 
@@ -58,12 +59,12 @@ class SnapchatBlockerService : AccessibilityService() {
             // Get the root node in the current window
             val rootNode = rootInActiveWindow ?: return
 
-            // Check if we're on the Spotlight page
-            if (isSpotlightPage(rootNode)) {
-                Log.d(TAG, "Spotlight page detected!")
-                Toast.makeText(this, "Spotlight detected!", Toast.LENGTH_SHORT).show()
+            // Check if we're on a blocked page (Discover)
+            if (isBlockedPage(rootNode)) {
+                Log.d(TAG, "Blocked page detected (Discover)!")
+                Toast.makeText(this, "Discover blocked - going home", Toast.LENGTH_SHORT).show()
 
-                // DISABLED FOR DEBUGGING - Uncomment to enable blocking
+                // Go home
                 performGlobalAction(GLOBAL_ACTION_HOME)
             }
 
@@ -73,23 +74,18 @@ class SnapchatBlockerService : AccessibilityService() {
         }
     }
 
-    private fun isSpotlightPage(node: android.view.accessibility.AccessibilityNodeInfo): Boolean {
+    private fun isBlockedPage(node: android.view.accessibility.AccessibilityNodeInfo): Boolean {
         // Check current node
         val nodeText = node.text?.toString()
         val nodeContentDesc = node.contentDescription?.toString()
         val nodeViewId = node.viewIdResourceName
 
-        // Log for debugging purposes
-        if (nodeText != null || nodeContentDesc != null || nodeViewId != null) {
-            Log.v(TAG, "Node - Text: $nodeText, ContentDesc: $nodeContentDesc, ViewId: $nodeViewId")
-        }
-
-        // Check if this node contains Spotlight indicators
-        for (indicator in SPOTLIGHT_INDICATORS) {
-            if (nodeText?.contains(indicator, ignoreCase = true) == true ||
-                nodeContentDesc?.contains(indicator, ignoreCase = true) == true ||
-                nodeViewId?.contains(indicator, ignoreCase = true) == true) {
-                Log.d(TAG, "Found Spotlight indicator: $indicator")
+        // Check if this node contains blocked page indicators
+        for (indicator in BLOCKED_PAGE_INDICATORS) {
+            if (nodeText?.contains(indicator, ignoreCase = false) == true ||
+                nodeContentDesc?.contains(indicator, ignoreCase = false) == true ||
+                nodeViewId?.contains(indicator, ignoreCase = false) == true) {
+                Log.d(TAG, "Found blocked page indicator: $indicator")
                 return true
             }
         }
@@ -98,7 +94,7 @@ class SnapchatBlockerService : AccessibilityService() {
         for (i in 0 until node.childCount) {
             val childNode = node.getChild(i)
             if (childNode != null) {
-                if (isSpotlightPage(childNode)) {
+                if (isBlockedPage(childNode)) {
                     childNode.recycle()
                     return true
                 }
