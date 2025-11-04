@@ -62,11 +62,11 @@ class SnapchatBlockerService : AccessibilityService() {
 
             // Check if we're on the Spotlight page
             if (isSpotlightPage(rootNode)) {
-                Log.d(TAG, "Spotlight page detected! Triggering home action")
-                Toast.makeText(this, "Spotlight detected - going home", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "Spotlight page detected!")
+                Toast.makeText(this, "Spotlight detected!", Toast.LENGTH_SHORT).show()
 
-                // Go home
-                performGlobalAction(GLOBAL_ACTION_HOME)
+                // DISABLED FOR DEBUGGING - Uncomment to enable blocking
+                // performGlobalAction(GLOBAL_ACTION_HOME)
             }
 
             rootNode.recycle()
